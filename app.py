@@ -9,17 +9,17 @@ st.write("Prompt eka dala Generate obanna, video ekak enawa!")
 prompt = st.text_input("Video eka gana liyanna", "A cute cat dancing in Colombo")
 
 if st.button("Generate Video ✨"):
-    with st.spinner("Video eka hadanawa... miniththu 1-2k inna, video eka lokui..."):
+    with st.spinner("Video eka hadanawa... miniththu 1-2k inna..."):
         try:
-            # HF eke free video model eka
-            client = InferenceClient("Wan-AI/Wan2.1-T2V-1.3B")
+            # Secrets eken token eka gannawa
+            token = st.secrets["HF_TOKEN"]
+            client = InferenceClient("Wan-AI/Wan2.1-T2V-1.3B", token=token)
             video_bytes = client.text_to_video(prompt)
             
-            # Video eka save karala pennana
             with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as f:
                 f.write(video_bytes)
                 st.video(f.name)
             st.success("Video eka hadila iwarai! 🎉")
         except Exception as e:
-            st.error("HF eke limit giya. Tikak inna aaye try karanna")
+            st.error("Error ekak awa")
             st.write(e)
